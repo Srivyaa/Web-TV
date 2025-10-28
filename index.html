@@ -1,0 +1,1056 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Srivya Web TV | Tamil IPTV Player</title>
+    <style>
+        :root {
+            --primary: #3498db;
+            --primary-dark: #2980b9;
+            --secondary: #2c3e50;
+            --accent: #e74c3c;
+            --light: #ecf0f1;
+            --dark: #2c3e50;
+            --success: #2ecc71;
+            --warning: #f39c12;
+            --danger: #e74c3c;
+            --gray: #95a5a6;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+            color: var(--light);
+            min-height: 100vh;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            padding: 20px 0;
+            margin-bottom: 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .logo {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            object-fit: cover;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .header-text {
+            text-align: left;
+        }
+        
+        h1 {
+            font-size: 2.8rem;
+            margin-bottom: 5px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            background: linear-gradient(to right, #ff7e5f, #feb47b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 600px;
+        }
+        
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        @media (min-width: 1200px) {
+            .main-content {
+                flex-direction: row;
+            }
+            
+            header {
+                flex-direction: row;
+                justify-content: center;
+                text-align: left;
+            }
+            
+            .header-text {
+                text-align: left;
+            }
+        }
+        
+        .control-section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .player-section {
+            flex: 2;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .channels-section {
+            flex: 1.5;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .card {
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .section-title {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .section-title i {
+            color: var(--primary);
+        }
+        
+        .input-group {
+            margin-bottom: 15px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+        
+        input[type="text"], input[type="url"] {
+            width: 100%;
+            padding: 12px 15px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+        
+        input[type="text"]:focus, input[type="url"]:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.3);
+        }
+        
+        .btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .btn-block {
+            width: 100%;
+        }
+        
+        .btn-secondary {
+            background: var(--secondary);
+        }
+        
+        .btn-secondary:hover {
+            background: #243342;
+        }
+        
+        .btn-success {
+            background: var(--success);
+        }
+        
+        .btn-success:hover {
+            background: #27ae60;
+        }
+        
+        .btn-danger {
+            background: var(--danger);
+        }
+        
+        .btn-danger:hover {
+            background: #c0392b;
+        }
+        
+        .btn-small {
+            padding: 8px 15px;
+            font-size: 0.9rem;
+        }
+        
+        .upload-area {
+            border: 2px dashed rgba(255, 255, 255, 0.3);
+            border-radius: 8px;
+            padding: 30px;
+            text-align: center;
+            margin-bottom: 20px;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        
+        .upload-area:hover {
+            border-color: rgba(255, 255, 255, 0.6);
+            background: rgba(255, 255, 255, 0.05);
+        }
+        
+        .upload-icon {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            color: var(--primary);
+        }
+        
+        .file-input {
+            display: none;
+        }
+        
+        .divider {
+            display: flex;
+            align-items: center;
+            margin: 20px 0;
+        }
+        
+        .divider::before, .divider::after {
+            content: "";
+            flex: 1;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .divider-text {
+            padding: 0 15px;
+            color: var(--gray);
+        }
+        
+        .channel-list-container {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        
+        .channel-list-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .channel-controls {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .channel-list {
+            flex: 1;
+            max-height: 600px;
+            overflow-y: auto;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            padding: 10px;
+        }
+        
+        .channel-item {
+            padding: 12px 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .channel-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+        }
+        
+        .channel-item.active {
+            background: rgba(52, 152, 219, 0.3);
+            border-radius: 6px;
+        }
+        
+        .channel-logo {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            object-fit: cover;
+            background: var(--secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            color: white;
+            flex-shrink: 0;
+        }
+        
+        .channel-info {
+            flex: 1;
+            min-width: 0;
+        }
+        
+        .channel-name {
+            font-weight: 500;
+            margin-bottom: 4px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .channel-group {
+            font-size: 0.8rem;
+            color: var(--gray);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .video-container {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%; /* 16:9 aspect ratio */
+            background: #000;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 15px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+        }
+        
+        #video-player {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .player-controls {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .player-info {
+            margin-top: 15px;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 8px;
+        }
+        
+        .status-message {
+            padding: 12px 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+            text-align: center;
+            font-weight: 500;
+        }
+        
+        .status-success {
+            background: rgba(46, 204, 113, 0.2);
+            border: 1px solid rgba(46, 204, 113, 0.5);
+            color: #2ecc71;
+        }
+        
+        .status-error {
+            background: rgba(231, 76, 60, 0.2);
+            border: 1px solid rgba(231, 76, 60, 0.5);
+            color: #e74c3c;
+        }
+        
+        .status-info {
+            background: rgba(52, 152, 219, 0.2);
+            border: 1px solid rgba(52, 152, 219, 0.5);
+            color: #3498db;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .playlist-stats {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+            font-size: 0.9rem;
+            color: var(--gray);
+        }
+        
+        .search-box {
+            margin-bottom: 15px;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            font-size: 0.9rem;
+            opacity: 0.7;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* Scrollbar styling */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 10px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-dark);
+        }
+        
+        .brand-highlight {
+            color: #ff7e5f;
+            font-weight: bold;
+        }
+        
+        .default-playlist-info {
+            background: rgba(52, 152, 219, 0.1);
+            border: 1px solid rgba(52, 152, 219, 0.3);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .channel-categories {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .category-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+        
+        .category-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        .category-btn.active {
+            background: var(--primary);
+            border-color: var(--primary);
+        }
+        
+        .scroll-indicator {
+            text-align: center;
+            padding: 10px;
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 1199px) {
+            .main-content {
+                flex-direction: column;
+            }
+            
+            .channel-list {
+                max-height: 400px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo-container">
+                <img src="https://raw.githubusercontent.com/Srivyaa/RadioStations-old/main/ic_radiologo.png" alt="Srivya Web TV Logo" class="logo">
+                <div class="header-text">
+                    <h1>Srivya Web TV</h1>
+                    <p class="subtitle">Tamil IPTV Channels & More - Browse and play from our extensive channel list</p>
+                </div>
+            </div>
+        </header>
+        
+        <div class="main-content">
+            <div class="control-section">
+                <div class="card">
+                    <h2 class="section-title">
+                        <i>📁</i> Load Playlist
+                    </h2>
+                    
+                    <div class="default-playlist-info">
+                        <h3>🎯 Default Tamil Playlist</h3>
+                        <p>Loaded automatically with popular Tamil channels</p>
+                        <button class="btn btn-success btn-block" id="reload-default">
+                            <i>🔄</i> Reload Tamil Playlist
+                        </button>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="m3u-url">Custom M3U URL</label>
+                        <input type="url" id="m3u-url" placeholder="https://example.com/playlist.m3u">
+                        <button class="btn btn-secondary btn-block" id="load-url-btn">
+                            <i>🔗</i> Load Custom URL
+                        </button>
+                    </div>
+                    
+                    <div class="divider">
+                        <span class="divider-text">OR</span>
+                    </div>
+                    
+                    <div class="upload-area" id="upload-area">
+                        <div class="upload-icon">📁</div>
+                        <p>Drag & drop your .m3u file here</p>
+                        <p>or</p>
+                        <button class="btn" id="browse-btn">
+                            <i>📂</i> Browse Files
+                        </button>
+                        <input type="file" id="file-input" class="file-input" accept=".m3u,.m3u8">
+                    </div>
+                    
+                    <div class="status-message hidden" id="status-message"></div>
+                    
+                    <div id="playlist-controls">
+                        <h3>Playlist: <span id="playlist-name">Tamil IPTV Channels</span></h3>
+                        <div class="playlist-stats">
+                            <span>Channels: <span id="channel-count">0</span></span>
+                            <span>Groups: <span id="group-count">0</span></span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h2 class="section-title">
+                        <i>🎬</i> Player Controls
+                    </h2>
+                    
+                    <div class="player-controls">
+                        <button class="btn" id="play-btn">
+                            <i>▶️</i> Play
+                        </button>
+                        <button class="btn" id="pause-btn">
+                            <i>⏸️</i> Pause
+                        </button>
+                        <button class="btn" id="mute-btn">
+                            <i>🔊</i> Mute
+                        </button>
+                        <button class="btn" id="fullscreen-btn">
+                            <i>⛶</i> Fullscreen
+                        </button>
+                        <button class="btn btn-secondary" id="volume-down">
+                            <i>🔉</i> Vol -
+                        </button>
+                        <button class="btn btn-secondary" id="volume-up">
+                            <i>🔊</i> Vol +
+                        </button>
+                    </div>
+                    
+                    <div class="player-info">
+                        <h3>Now Playing</h3>
+                        <p id="now-playing">Select a Tamil channel to begin</p>
+                        <p id="player-status" class="status-info">Ready to play</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="player-section">
+                <div class="card">
+                    <h2 class="section-title">
+                        <i>📺</i> Live TV
+                    </h2>
+                    
+                    <div class="video-container">
+                        <video id="video-player" controls poster="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9IiMwMDAiLz48dGV4dCB4PSI1MCUiIHk9IjUwJSIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjI0IiBmaWxsPSIjZmZmIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iLjNlbSI+U3JpdnlhIFdlYiBUVjwvdGV4dD48L3N2Zz4=">
+                            Your browser does not support the video tag.
+                        </video>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h2 class="section-title">
+                        <i>ℹ️</i> About Srivya Web TV
+                    </h2>
+                    <p>Welcome to <span class="brand-highlight">Srivya Web TV</span>, your premier destination for Tamil IPTV channels and more!</p>
+                    <p>We automatically load a curated list of Tamil channels, but you can also load your own M3U playlists from URLs or local files.</p>
+                    <p><strong>Featured:</strong> Tamil news, entertainment, movies, and cultural channels</p>
+                    <p><strong>Note:</strong> Some streams may not play due to CORS restrictions or incompatible formats.</p>
+                </div>
+            </div>
+            
+            <div class="channels-section">
+                <div class="card">
+                    <div class="channel-list-container">
+                        <div class="channel-list-header">
+                            <h2 class="section-title">
+                                <i>📡</i> Channel List
+                            </h2>
+                            <div class="channel-controls">
+                                <button class="btn btn-small" id="scroll-top-btn">
+                                    <i>⬆️</i> Top
+                                </button>
+                                <button class="btn btn-small" id="scroll-bottom-btn">
+                                    <i>⬇️</i> Bottom
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="search-box">
+                            <input type="text" id="channel-search" placeholder="Search Tamil channels...">
+                        </div>
+                        
+                        <div class="channel-categories" id="channel-categories">
+                            <button class="category-btn active" data-group="all">All Channels</button>
+                            <!-- Categories will be populated dynamically -->
+                        </div>
+                        
+                        <div class="channel-list" id="channel-list">
+                            <p class="channel-placeholder">Loading Tamil channels...</p>
+                        </div>
+                        
+                        <div class="scroll-indicator" id="scroll-indicator">
+                            Scroll to see more channels ↓
+                        </div>
+                        
+                        <button class="btn btn-danger btn-block" id="clear-playlist">
+                            <i>🗑️</i> Clear Playlist
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <p><span class="brand-highlight">Srivya Web TV</span> - Tamil IPTV Player | Default playlist: Tamil Local IPTV | Channels: <span id="footer-channel-count">0</span></p>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // DOM Elements
+            const uploadArea = document.getElementById('upload-area');
+            const fileInput = document.getElementById('file-input');
+            const browseBtn = document.getElementById('browse-btn');
+            const m3uUrlInput = document.getElementById('m3u-url');
+            const loadUrlBtn = document.getElementById('load-url-btn');
+            const reloadDefaultBtn = document.getElementById('reload-default');
+            const statusMessage = document.getElementById('status-message');
+            const playlistControls = document.getElementById('playlist-controls');
+            const playlistName = document.getElementById('playlist-name');
+            const channelCount = document.getElementById('channel-count');
+            const groupCount = document.getElementById('group-count');
+            const footerChannelCount = document.getElementById('footer-channel-count');
+            const channelList = document.getElementById('channel-list');
+            const channelSearch = document.getElementById('channel-search');
+            const channelCategories = document.getElementById('channel-categories');
+            const clearPlaylistBtn = document.getElementById('clear-playlist');
+            const scrollTopBtn = document.getElementById('scroll-top-btn');
+            const scrollBottomBtn = document.getElementById('scroll-bottom-btn');
+            const scrollIndicator = document.getElementById('scroll-indicator');
+            
+            const videoPlayer = document.getElementById('video-player');
+            const playBtn = document.getElementById('play-btn');
+            const pauseBtn = document.getElementById('pause-btn');
+            const muteBtn = document.getElementById('mute-btn');
+            const fullscreenBtn = document.getElementById('fullscreen-btn');
+            const volumeDownBtn = document.getElementById('volume-down');
+            const volumeUpBtn = document.getElementById('volume-up');
+            const nowPlaying = document.getElementById('now-playing');
+            const playerStatus = document.getElementById('player-status');
+            
+            // Constants
+            const DEFAULT_PLAYLIST_URL = 'https://raw.githubusercontent.com/amazeyourself/tamil-local-iptv/main/channels.m3u';
+            
+            // State
+            let channels = [];
+            let currentChannel = null;
+            let filteredChannels = [];
+            let currentCategory = 'all';
+            let channelGroups = new Set();
+            
+            // Event Listeners
+            browseBtn.addEventListener('click', () => fileInput.click());
+            fileInput.addEventListener('change', handleFileSelect);
+            uploadArea.addEventListener('dragover', handleDragOver);
+            uploadArea.addEventListener('drop', handleFileDrop);
+            loadUrlBtn.addEventListener('click', loadFromUrl);
+            reloadDefaultBtn.addEventListener('click', loadDefaultPlaylist);
+            clearPlaylistBtn.addEventListener('click', clearPlaylist);
+            channelSearch.addEventListener('input', filterChannels);
+            scrollTopBtn.addEventListener('click', () => channelList.scrollTo({ top: 0, behavior: 'smooth' }));
+            scrollBottomBtn.addEventListener('click', () => channelList.scrollTo({ top: channelList.scrollHeight, behavior: 'smooth' }));
+            
+            // Scroll indicator
+            channelList.addEventListener('scroll', () => {
+                const { scrollTop, scrollHeight, clientHeight } = channelList;
+                if (scrollHeight - scrollTop - clientHeight < 50) {
+                    scrollIndicator.textContent = 'All channels loaded ↑';
+                } else {
+                    scrollIndicator.textContent = 'Scroll to see more channels ↓';
+                }
+            });
+            
+            playBtn.addEventListener('click', () => {
+                videoPlayer.play().catch(e => {
+                    showStatus('Error playing video: ' + e.message, 'error');
+                });
+            });
+            pauseBtn.addEventListener('click', () => videoPlayer.pause());
+            muteBtn.addEventListener('click', toggleMute);
+            fullscreenBtn.addEventListener('click', toggleFullscreen);
+            volumeDownBtn.addEventListener('click', () => adjustVolume(-0.1));
+            volumeUpBtn.addEventListener('click', () => adjustVolume(0.1));
+            
+            videoPlayer.addEventListener('loadstart', () => {
+                playerStatus.textContent = 'Loading stream...';
+                playerStatus.className = 'status-info';
+            });
+            
+            videoPlayer.addEventListener('canplay', () => {
+                playerStatus.textContent = 'Ready to play';
+                playerStatus.className = 'status-success';
+            });
+            
+            videoPlayer.addEventListener('error', (e) => {
+                playerStatus.textContent = 'Error loading stream';
+                playerStatus.className = 'status-error';
+                console.error('Video error:', e);
+            });
+            
+            videoPlayer.addEventListener('waiting', () => {
+                playerStatus.textContent = 'Buffering...';
+                playerStatus.className = 'status-info';
+            });
+            
+            videoPlayer.addEventListener('playing', () => {
+                playerStatus.textContent = 'Playing';
+                playerStatus.className = 'status-success';
+            });
+            
+            // Initialize - Load default playlist
+            loadDefaultPlaylist();
+            
+            // Functions
+            function loadDefaultPlaylist() {
+                showStatus('Loading Tamil IPTV channels...', 'info');
+                reloadDefaultBtn.innerHTML = '<div class="loading"></div> Loading...';
+                reloadDefaultBtn.disabled = true;
+                
+                fetch(DEFAULT_PLAYLIST_URL)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error(`HTTP error! status: ${response.status}`);
+                        }
+                        return response.text();
+                    })
+                    .then(data => {
+                        parseM3U(data);
+                        playlistName.textContent = 'Tamil IPTV Channels';
+                        showStatus('Tamil playlist loaded successfully!', 'success');
+                        playlistControls.classList.remove('hidden');
+                    })
+                    .catch(error => {
+                        console.error('Error loading default M3U:', error);
+                        showStatus('Error loading Tamil playlist: ' + error.message, 'error');
+                    })
+                    .finally(() => {
+                        reloadDefaultBtn.innerHTML = '<i>🔄</i> Reload Tamil Playlist';
+                        reloadDefaultBtn.disabled = false;
+                    });
+            }
+            
+            function handleDragOver(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                uploadArea.style.borderColor = 'rgba(255, 255, 255, 0.6)';
+                uploadArea.style.background = 'rgba(255, 255, 255, 0.05)';
+            }
+            
+            function handleFileDrop(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                uploadArea.style.borderColor = 'rgba(255, 255, 255, 0.3)';
+                uploadArea.style.background = 'transparent';
+                
+                const files = e.dataTransfer.files;
+                if (files.length > 0) {
+                    processFile(files[0]);
+                }
+            }
+            
+            function handleFileSelect(e) {
+                const files = e.target.files;
+                if (files.length > 0) {
+                    processFile(files[0]);
+                }
+            }
+            
+            function loadFromUrl() {
+                const url = m3uUrlInput.value.trim();
+                if (!url) {
+                    showStatus('Please enter a valid URL', 'error');
+                    return;
+                }
+                
+                showStatus('Loading playlist from URL...', 'info');
+                loadUrlBtn.innerHTML = '<div class="loading"></div> Loading...';
+                loadUrlBtn.disabled = true;
+                
+                fetch(url)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error(`HTTP error! status: ${response.status}`);
+                        }
+                        return response.text();
+                    })
+                    .then(data => {
+                        parseM3U(data);
+                        playlistName.textContent = 'Custom Playlist';
+                        showStatus('Custom playlist loaded successfully!', 'success');
+                        playlistControls.classList.remove('hidden');
+                        m3uUrlInput.value = '';
+                    })
+                    .catch(error => {
+                        console.error('Error loading M3U from URL:', error);
+                        showStatus('Error loading playlist: ' + error.message, 'error');
+                    })
+                    .finally(() => {
+                        loadUrlBtn.innerHTML = '<i>🔗</i> Load Custom URL';
+                        loadUrlBtn.disabled = false;
+                    });
+            }
+            
+            function processFile(file) {
+                if (!file.name.toLowerCase().endsWith('.m3u') && !file.name.toLowerCase().endsWith('.m3u8')) {
+                    showStatus('Please select a valid .m3u or .m3u8 file', 'error');
+                    return;
+                }
+                
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    try {
+                        parseM3U(e.target.result);
+                        playlistName.textContent = file.name;
+                        showStatus('Playlist loaded successfully!', 'success');
+                        playlistControls.classList.remove('hidden');
+                    } catch (error) {
+                        console.error('Error parsing M3U file:', error);
+                        showStatus('Error parsing M3U file. Please check the format.', 'error');
+                    }
+                };
+                reader.readAsText(file);
+            }
+            
+            function parseM3U(content) {
+                channels = [];
+                channelGroups.clear();
+                const lines = content.split('\n');
+                let currentChannel = {};
+                
+                for (let i = 0; i < lines.length; i++) {
+                    const line = lines[i].trim();
+                    
+                    if (line.startsWith('#EXTINF:')) {
+                        // Parse channel info
+                        const info = line.substring(8).split(',');
+                        const params = info[0].split(' ');
+                        const name = info.slice(1).join(',').trim();
+                        
+                        currentChannel = {
+                            name: name,
+                            url: '',
+                            tvg: {
+                                id: '',
+                                name: '',
+                                logo: '',
+                                group: 'General'
+                            }
+                        };
+                        
+                        // Parse parameters
+                        for (let j = 0; j < params.length; j++) {
+                            const param = params[j];
+                            if (param.includes('tvg-id=')) {
+                                currentChannel.tvg.id = param.split('=')[1].replace(/"/g, '');
+                            } else if (param.includes('tvg-name=')) {
+                                currentChannel.tvg.name = param.split('=')[1].replace(/"/g, '');
+                            } else if (param.includes('tvg-logo=')) {
+                                currentChannel.tvg.logo = param.split('=')[1].replace(/"/g, '');
+                            } else if (param.includes('group-title=')) {
+                                currentChannel.tvg.group = param.split('=')[1].replace(/"/g, '') || 'General';
+                                channelGroups.add(currentChannel.tvg.group);
+                            }
+                        }
+                    } else if (line && !line.startsWith('#') && currentChannel.name) {
+                        // This is the URL line
+                        currentChannel.url = line;
+                        channels.push(currentChannel);
+                        currentChannel = {};
+                    }
+                }
+                
+                updateChannelCategories();
+                filterChannels();
+                channelCount.textContent = channels.length;
+                footerChannelCount.textContent = channels.length;
+                groupCount.textContent = channelGroups.size;
+                
+                // Auto-play first channel if available
+                if (channels.length > 0 && !currentChannel) {
+                    setTimeout(() => playChannel(channels[0], 0), 1000);
+                }
+            }
+            
+            function updateChannelCategories() {
+                channelCategories.innerHTML = '';
+                
+                // Add "All Channels" button
+                const allButton = document.createElement('button');
+                allButton.className = 'category-btn active';
+                allButton.textContent = 'All Channels';
+                allButton.dataset.group = 'all';
+                allButton.addEventListener('click', (e) => {
+                    document.querySelectorAll('.category-btn').forEach(btn => btn.classList.remove('active'));
+                    e.target.classList.add('active');
+                    currentCategory = 'all';
+                    filterChannels();
+                });
+                channelCategories.appendChild(allButton);
+                
+                // Add category buttons for each group
+                channelGroups.forEach(group => {
+                    const button = document.createElement('button');
+                    button.className = 'category-btn';
+                    button.textContent = group;
+                    button.dataset.group = group;
+                    button.addEventListener('click', (e) => {
+                        document.querySelectorAll('.category-btn').forEach(btn => btn.classList.remove('active'));
+                        e.target.classList.add('active');
+                        currentCategory = group;
+                        filterChannels();
+                    });
+                    channelCategories.appendChild(button);
+                });
+            }
+            
+            function filterChannels() {
+                const searchTerm = channelSearch.value.toLowerCase();
+                
+                if (!searchTerm && currentCategory === 'all') {
+                    filteredChannels = [...channels];
+                } else {
+                    filteredChannels = channels.filter(channel => {
+                        const matchesSearch = !searchTerm || 
+                            channel.name.toLowerCase().includes(searchTerm) ||
+                            (channel.tvg.group && channel.tvg.group.toLowerCase().includes(searchTerm));
+                        
+                        const matchesCategory = currentCategory === 'all' || 
+                            channel.tvg.group === currentCategory;
+                        
+                        return matchesSearch && matchesCategory;
+                    });
+                }
+                updateChannelList();
+            }
+            
+            function updateChannelList() {
+                channelList.innerHTML = '';
+                
+                if (filteredChannels.length === 0) {
+                    channelList.innerHTML = '<p class="channel-placeholder">No channels found</p>';
+                    return;
+                }
+                
+                filteredChannels.forEach((channel, index) => {
+                    const channelItem = document.createElement('div');
+                    channelItem.className = 'channel-item';
+                    
+                    const logoContent = channel.tvg.logo ? 
+                        `<img src="${channel.tvg.logo}" alt="${channel.name}" class="channel-logo" onerror="this.style.display='none'">` :
+                        `<div class="channel-logo">${channel.name.charAt(0)}</div>`;
+                    
+                    channelItem.innerHTML = `
+                        ${logoContent}
+                        <div class="channel-info">
+                            <div class="channel-name">${channel.name}</div>
+                            ${channel.tvg.group ? `<div class="channel-group">${channel.tvg.group}</div>` : ''}
+                        </div>
+                    `;
+                    
+                    channelItem.addEventListener('click', () => playChannel(channel, index));
+                    channelList.appendChild(channelItem);
+                });
+            }
+            
+            function playChannel(channel, index) {
+                // Remove active class from all channels
+                document.querySelectorAll('.channel-item').forEach(item => {
+                    item.classList.remove('active');
+               
